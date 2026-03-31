@@ -2,7 +2,7 @@
 File: Problem Set Unit 3
 Author: Kaveeshan Sathasivam
 Date Created: March 30, 2026
-Date Last Modified: March 30, 2026
+Date Last Modified: March 31, 2026
  */
 
 import java.util.Scanner;
@@ -11,103 +11,95 @@ public class ProblemSet {
 
     public static void main(String args[]) {
 
-        Scanner input = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
         System.out.print("Input two emails: ");
-        String line = input.nextLine();
+        String input = scanner.nextLine();
 
-        // Split into two emails
-        String[] emails = line.split(",\\s*");
+        // Split into two emails (handles ", " or ",")
+        String[] emails = input.split(",\\s*");
+
+        if (emails.length != 2) {
+            System.out.println("Please enter exactly two emails.");
+            return;
+        }
 
         for (String email : emails) {
-            validateEmail(email.trim());
+            processEmail(email.trim());
         }
 
-        input.close();
+        scanner.close();
     }
 
-    public static void validateEmail(String email) {
+    // Process each email
+    public static void processEmail(String email) {
+        String result = validateEmail(email);
 
-        String local = "";
-        String domain = "";
+        if (result.startsWith("Valid")) {
+            String[] parts = email.split("@");
+            String local = parts[0];
+            String domain = parts[1];
 
-        // First Rule: Can only be exactly one @
-        int atCount = 0;
-        for (int i = 0; i < email.length(); i++) {
-            if (email.charAt(i) == '@') {
-                atCount++;
-            }
+            System.out.println(email + ": " + result +
+                    " | Local: " + local +
+                    " | Domain: " + domain);
+        } else {
+            System.out.println(email + ": " + result);
         }
+    }
 
-        if (atCount == 0) {
-            System.out.println(email + ": Invalid: Missing @");
-            return;
-        }
-        if (atCount > 1) {
-            System.out.println(email + ": Invalid: Multiple @");
-            return;
-        }
+    // Email Validation Rules/Logic
+    public static String validateEmail(String email) {
 
-        int atIndex = email.indexOf('@');
-        local = email.substring(0, atIndex);
-        domain = email.substring(atIndex + 1);
+        // Rule 1: Exactly one @
+        int atCount = email.length() - email.replace("@", "").length();
+        if (atCount == 0) return "Invalid: Missing @";
+        if (atCount > 1) return "Invalid: Multiple @";
 
-        // Second Rule: It can't start or end with a dot
+        // Rule 2: Cannot start or end with a dot
         if (email.startsWith(".") || email.endsWith(".")) {
-            System.out.println(email + ": Invalid: Starts or ends with dot");
-            return;
+            return "Invalid: Starts or ends with dot";
         }
 
-        // Third Rule: No spaces
+        // Rule 3: No spaces
         if (email.contains(" ")) {
-            System.out.println(email + ": Invalid: Contains spaces");
-            return;
+            return "Invalid: Contains spaces";
         }
 
-        // Rule 4: Local length - can't be 0 and can't be over 64 characters
-        if (local.length() < 1) {
-            System.out.println(email + ": Invalid: Local part too short");
-            return;
-        }
-        if (local.length() > 64) {
-            System.out.println(email + ": Invalid: Local part too long");
-            return;
-        }
+        String[] parts = email.split("@");
+        String local = parts[0];
+        String domain = parts[1];
 
-        // Rule 5: The domain must have dot
+        // Rule 4: Local length - cant be under 1 or above 64 characters
+        if (local.length() < 1) return "Invalid: Local part too short";
+        if (local.length() > 64) return "Invalid: Local part too long";
+
+        // Rule 5: Domain must contain dot
         if (!domain.contains(".")) {
-            System.out.println(email + ": Invalid: No dot in domain");
-            return;
+            return "Invalid: No dot in domain";
         }
 
-        // Get the extension
-        int lastDot = domain.lastIndexOf('.');
-        String extension = domain.substring(lastDot + 1);
+        // Rule 6: Domain extension
+        String extension = domain.substring(domain.lastIndexOf('.') + 1);
 
-        // Seventh Rule: extension length - cant be less than 2 or greater than 6
         if (extension.length() < 2 || extension.length() > 6) {
-            System.out.println(email + ": Invalid: Invalid domain extension length");
-            return;
+            return "Invalid: Invalid domain extension length";
         }
 
-        // Extra: extension must be letters only
-        for (int i = 0; i < extension.length(); i++) {
-            if (!Character.isLetter(extension.charAt(i))) {
-                System.out.println(email + ": Invalid: Domain extension contains non-letters");
-                return;
-            }
+        if (!extension.matches("[a-zA-Z]+")) {
+            return "Invalid: Domain extension contains non-letters";
         }
 
-        // ===== Exceptions =====
+        // Exception B: allowed characters in local
+        if (!local.matches("[a-zA-Z0-9._+]+")) {
+            return "Invalid: Invalid characters in local part";
+        }
 
-        // Gmail normalization check
+        // Exception C: Gmail normalization
         if (domain.equalsIgnoreCase("gmail.com")) {
-            System.out.println(email + ": Valid (Gmail normalized) | Local: "
-                    + local + " | Domain: " + domain);
-            return;
+            return "Valid (Gmail normalized)";
         }
 
-        // If valid email
-        System.out.println(email + ": Valid | Local: " + local + " | Domain: " + domain);
+        return "Valid";
     }
 }
