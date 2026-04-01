@@ -7,7 +7,7 @@ Date Last Modified: April 1, 2026
 
 import java.util.Scanner;
 
-public class EmailValidatorOption3Simple {
+public class EmailValidator {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Input email(s): ");
