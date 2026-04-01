@@ -75,8 +75,6 @@ Valid (Gmail normalized)
 ```
 
 **Requirements:**
-- Validate in the order specified in Option 1
-- Check for exceptions AFTER determining if the email would be invalid under basic rules
 - Apply exceptions only where they are applicable
 - Maintain clear, efficient code structure
 
@@ -93,9 +91,9 @@ Improve your code from the previous options to:
 
 **Example:**
 ```
-Input two emails: john.doe@example.com, invalid@domain.5yz
+Input two emails: john.doe@example.com, invalid@domain.z
 john.doe@example.com: Valid | Local: john.doe | Domain: example.com
-invalid@domain.5yz: Invalid: Domain extension contains non-letters
+invalid@domain.5yz: Invalid: Domain extension too short
 ```
 
 **Additional Example:**
