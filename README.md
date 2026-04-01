@@ -93,7 +93,7 @@ Improve your code from the previous options to:
 ```
 Input two emails: john.doe@example.com, invalid@domain.z
 john.doe@example.com: Valid | Local: john.doe | Domain: example.com
-invalid@domain.5yz: Invalid: Domain extension too short
+invalid@domain.z: Invalid: Domain extension too short
 ```
 
 **Additional Example:**
