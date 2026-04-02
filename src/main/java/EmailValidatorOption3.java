@@ -7,7 +7,7 @@ Date Last Modified: April 2, 2026
 
 import java.util.Scanner;
 
-public class EmailValidatorOption3NoLoopsAtAll {
+public class EmailValidatorOption3 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Input email(s): ");
@@ -16,8 +16,9 @@ public class EmailValidatorOption3NoLoopsAtAll {
         String firstEmail = "";
         String secondEmail = "";
 
-        // Split emails using comma
+        // Split emails using comma 
         int commaIndex = input.indexOf(',');
+        //index at -1 means that it doesn't exist
         if (commaIndex == -1) {
             firstEmail = input;
         } else {
@@ -87,16 +88,12 @@ public class EmailValidatorOption3NoLoopsAtAll {
         }
 
         // Rule 5: domain must contain at least one dot
-        if (domain.indexOf('.') == -1) {
-            return "Invalid: No dot in domain";
-        }
-
-        // Rule 6: domain extension length (2-6) and letters only
         int lastDot = domain.lastIndexOf('.');
         if (lastDot == -1) {
             return "Invalid: No dot in domain";
         }
 
+        // Rule 6: domain extension length (2-6) and letters only
         String extension = domain.substring(lastDot + 1);
         if (extension.length() < 2) {
             return "Invalid: Domain extension too short";
@@ -112,7 +109,7 @@ public class EmailValidatorOption3NoLoopsAtAll {
             return "Invalid: Invalid characters in local part";
         }
 
-        // Exception C: Gmail normalization
+        // Gmail normalization only after all validations pass
         if (domain.equalsIgnoreCase("gmail.com")) {
             return "Valid (Gmail normalized)";
         }
@@ -134,7 +131,7 @@ public class EmailValidatorOption3NoLoopsAtAll {
         }
     }
 
-    // method to check allowed characters in local (no loops)
+    // method to check allowed characters in local 
     public static boolean isValidLocal(String local, int index) {
         if (index >= local.length()) {
             return true;
