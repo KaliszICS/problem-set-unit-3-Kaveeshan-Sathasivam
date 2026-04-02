@@ -2,7 +2,7 @@
 File Name: Problem Set Unit 3
 Author: Kaveeshan Sathasivam
 Date Created: March 30, 2026
-Date Last Modified: April 1, 2026
+Date Last Modified: April 2, 2026
 */
 
 import java.util.Scanner;
@@ -120,7 +120,7 @@ public class EmailValidatorOption3NoLoopsAtAll {
         return "Valid";
     }
 
-    // method to check if all letters (no loops)
+    // method to check if all letters 
     public static boolean isAllLetters(String s, int index) {
         if (index >= s.length()) {
             return true;
